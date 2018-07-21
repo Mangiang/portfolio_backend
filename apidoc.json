@@ -1,0 +1,8 @@
+{
+    "name": "Portefolio API documentation",
+    "version": "1.0.0",
+    "description": "Portefolio API",
+    "template": {
+        "forceLanguage": "en"
+    }
+}
