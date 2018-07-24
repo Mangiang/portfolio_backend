@@ -1,0 +1,9 @@
+{
+	"apps":[
+		{
+			"name": "portefolioBackend",
+			"script": "yarn",
+			"args": "start"
+		}		
+	]
+}
