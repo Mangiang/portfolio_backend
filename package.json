@@ -10,7 +10,7 @@
     "debug": "nodemon src/index.js",
     "doc": "./node_modules/.bin/apidoc.cmd -e \"(node_modules)\" -o public/doc"
   },
-  "author": "Noemie Galvada (gavald_n) | Arthur Joly (joly_p)",
+  "author": "Arthur Joly",
   "dependencies": {
     "apidoc": "^0.17.6",
     "bcrypt": "^2.0.1",

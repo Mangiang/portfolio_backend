@@ -64,3 +64,5 @@ typings/
 
 # doc
 doc/
+
+.idea/
