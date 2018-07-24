@@ -1,19 +1,15 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
 const supertest = require("supertest");
 const should = require("should");
-
+const http = require('http');
 const {app, InitRoutes} = require('../src/server');
 const mongoClient = require('mongodb').MongoClient;
-const https = require('https');
-const fs = require('fs');
 const bcrypt = require('bcrypt');
-const server = supertest.agent("https://localhost:8888");
+const server = supertest.agent("http://localhost:8888/api");
 const mongoUrl = 'mongodb://localhost:27017/portefolio';
 
 
 describe("User route testing", () => {
-    let httpsServer;
+    let httpServer;
 
     before((done) => {
         mongoClient.connect(mongoUrl, function(err, client){
@@ -30,12 +26,7 @@ describe("User route testing", () => {
                     password : hash
                 }, (err, res) => {
                     console.log("[userRoute][before] Added user test");
-                    httpsServer = https.createServer({
-                                        key: fs.readFileSync('/etc/letsencrypt/live/arthur-joly.fr/privkey.pem'),
-                                        cert: fs.readFileSync('/etc/letsencrypt/live/arthur-joly.fr/cert.pem'),
-                                        passphrase: '1234'
-                                        }, app);
-                    httpsServer.listen(8888, () => {console.log("[userRoute][before] The server started on port 8888"); done()});
+                    httpServer = http.createServer(app).listen(8888, () => {console.log("[userRoute][before] The server started on port 8888"); done()});
                 });
             })
         })
@@ -68,8 +59,7 @@ describe("User route testing", () => {
     after(done => {
         dbo.dropDatabase((err, delOk) => {
             console.log("[userRoute][after] dropped portefolioTest"); 
-            httpsServer.close(done);
+            httpServer.close(done);
         });
-        httpsServer.close(done)
     })
 });
