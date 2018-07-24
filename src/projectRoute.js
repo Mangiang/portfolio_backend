@@ -1,10 +1,10 @@
 const uuidv4 = require('uuid/v4');
-const cloudinary = require('cloudinary')
-const formidable = require('formidable')
+const cloudinary = require('cloudinary');
+const formidable = require('formidable');
 
-cloudinary.config('cloud_name', 'dag6mrva0')
-cloudinary.config('api_key', '349989267835172')
-cloudinary.config('api_secret', 'HHM3DQihqlCnJttOmUx2xPBTEHo')
+cloudinary.config('cloud_name', 'dag6mrva0');
+cloudinary.config('api_key', '349989267835172');
+cloudinary.config('api_secret', 'HHM3DQihqlCnJttOmUx2xPBTEHo');
 
 /**
  * @api {get} /project/list GetAllProjects
@@ -153,7 +153,7 @@ function UploadImage(req, res, dbo)
                 function(err, result){
                     if (err) 
                         return res.status(500).send({success:false, error: "Error updating the database" });
-                })
+                });
                 if (!result.public_id || !result.secure_url)
                     return res.status(500).send({success:false, error: "Error updating images" });
                 return res.status(201).send({success:true});
@@ -258,4 +258,4 @@ function DeleteProject(req, res, dbo){
     })
 }
 
-module.exports = {CreateProject, UploadImage, DeleteImage, GetAllProjects, GetProjectDetail, UpdateProject, DeleteProject}
+module.exports = {CreateProject, UploadImage, DeleteImage, GetAllProjects, GetProjectDetail, UpdateProject, DeleteProject};
