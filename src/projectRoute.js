@@ -150,7 +150,7 @@ function UploadImage(req, res, dbo)
     form.parse(req, (err, fields, files) => {
         cloudinary.uploader.upload(files.image.path, (result) => {
             if (result){
-                dbo.collection("project").update({id : req.params.id},{ $addToSet: {images : [{id: result.public_id, url:result.secure_url}]} }, 
+                dbo.collection("project").update({id : req.params.id},{ $addToSet: {images : {id: result.public_id, url:result.secure_url}} },
                 function(err, result){
                     if (err) 
                         return res.status(500).send({success:false, error: "Error updating the database" });
