@@ -113,7 +113,8 @@ function CreateProject(req, res, dbo){
         title : req.body.title,
         beginDate : req.body.beginDate,
         endDate : req.body.endDate,
-        description : req.body.description
+        description : req.body.description,
+        smallDescription: req.body.smallDescription
     }, 
     function(err, result) {
         if (err) 
@@ -221,6 +222,7 @@ function DeleteImage(req, res, dbo){
  *  HTTP/1.1 500 Internal Server Error
  */
 function UpdateProject(req, res, dbo){
+    //TODO: Check if the body is valid
     dbo.collection("project").update({id : req.params.id},{ $set: req.body }, 
     function(err, result){
         if (err) 
