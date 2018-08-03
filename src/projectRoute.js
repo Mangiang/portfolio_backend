@@ -188,8 +188,7 @@ function DeleteImage(req, res, dbo){
         return res.status(400).send({success:false, error: "No id provided"});
 
     cloudinary.uploader.destroy(req.params.imageId, (result) => console.log(result));
-
-    dbo.collection("project").update({id : req.params.id}, {$pull:{images: {id:req.params.imageId}}},
+    dbo.collection("project").update({id : req.params.projectId}, {$pull:{images: {id:req.params.imageId}}},
     function(err, result){
         if (err) 
             return res.status(500).send({success:false, error: "Error updating the database" });
