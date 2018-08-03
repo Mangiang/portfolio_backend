@@ -31,7 +31,7 @@ function InitRoutes(dbo){
     app.delete('/api/project/delete/:id', (req, res) => VerifyToken(req, res, dbo, projectRoute.DeleteProject));
     //Image project
     app.post('/api/project/upload/:id', (req, res) => VerifyToken(req, res, dbo, projectRoute.UploadImage));
-    app.delete('/api/project/deleteImage/:id', (req, res) => VerifyToken(req, res, dbo, projectRoute.DeleteImage));
+    app.delete('/api/project/deleteImage/:projectId/:imageId', (req, res) => VerifyToken(req, res, dbo, projectRoute.DeleteImage));
     // Timeline date
     app.get('/api/timeline/list', (req, res) => timelineRoute.GetAllTimelines(req, res, dbo));
     app.get('/api/timeline/detail/:id', (req, res) => timelineRoute.GetTimelineDetail(req, res, dbo));
