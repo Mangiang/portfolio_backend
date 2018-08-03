@@ -185,16 +185,14 @@ function UploadImage(req, res, dbo)
 function DeleteImage(req, res, dbo){
     if (!req.body || !req.body.imageId)
         return res.status(400).send({success:false, error: "No id provided"});
-    
     cloudinary.uploader.destroy(req.body.imageId, (result) => console.log(result));
-
-    const result = dbo.collection("project").update({id : req.params.id}, {$pull:{images:{$elemMatch: {id:req.body.imageId}}}},
+    dbo.collection("project").update({id : req.params.id}, {$pull:{images: {id:req.body.imageId}}},
     function(err, result){
         if (err) 
             return res.status(500).send({success:false, error: "Error updating the database" });
         else
             return res.status(204).send({success:true, result});
-    })
+    });
 }
 
 /**
