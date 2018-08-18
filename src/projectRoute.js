@@ -150,14 +150,14 @@ function UploadImage(req, res, dbo)
     form.parse(req, (err, fields, files) => {
         cloudinary.uploader.upload(files.image.path, (result) => {
             if (result){
+                if (!result.public_id || !result.secure_url)
+                    return res.status(500).send({success:false, error: "Error updating images" });
                 dbo.collection("project").update({id : req.params.id},{ $addToSet: {images : {id: result.public_id, url:result.secure_url}} },
                 function(err, result){
                     if (err) 
                         return res.status(500).send({success:false, error: "Error updating the database" });
                 });
-                if (!result.public_id || !result.secure_url)
-                    return res.status(500).send({success:false, error: "Error updating images" });
-                return res.status(201).send({success:true});
+                return res.status(201).send({success:true, url: result.secure_url, imageId: result.public_id});
             }
             return res.status(500).send({success:false, error: err});
         });
