@@ -114,7 +114,8 @@ function CreateProject(req, res, dbo){
         beginDate : req.body.beginDate,
         endDate : req.body.endDate,
         description : req.body.description,
-        smallDescription: req.body.smallDescription
+        smallDescription: req.body.smallDescription,
+        status: req.body.status
     }, 
     function(err, result) {
         if (err) 
@@ -165,10 +166,9 @@ function UploadImage(req, res, dbo)
 }
 
 /**
- * @api {delete} /project/deleteImage/:projectId/:imageId DeleteImage
+ * @api {delete} /project/deleteImage/:id DeleteImage
  * @apiGroup Project
- * @apiParam {String} projecId Project id. Example: "416ac246-e7bc-49ff-93b4-f7e94d997e6b"
- * @apiParam {String} imageId Image id. Example: "zups7jgi5bmsmxkj6wnb"
+ * @apiParam {String} id Project id. Example: "416ac246-e7bc-49ff-93b4-f7e94d997e6b"
  * @apiParamExample {json} Request-Example:
  *  {
  *      imageId:"zups7jgi5bmsmxkj6wnb"
@@ -184,17 +184,18 @@ function UploadImage(req, res, dbo)
  *  HTTP/1.1 500 Internal Server Error
  */
 function DeleteImage(req, res, dbo){
-    if (!req.params || !req.params.imageId)
+    if (!req.body || !req.body.imageId)
         return res.status(400).send({success:false, error: "No id provided"});
+    
+    cloudinary.uploader.destroy(req.body.imageId, (result) => console.log(result));
 
-    cloudinary.uploader.destroy(req.params.imageId, (result) => console.log(result));
-    dbo.collection("project").update({id : req.params.projectId}, {$pull:{images: {id:req.params.imageId}}},
+    const result = dbo.collection("project").update({id : req.params.id}, {$pull:{images:{$elemMatch: {id:req.body.imageId}}}},
     function(err, result){
         if (err) 
             return res.status(500).send({success:false, error: "Error updating the database" });
         else
             return res.status(204).send({success:true, result});
-    });
+    })
 }
 
 /**
